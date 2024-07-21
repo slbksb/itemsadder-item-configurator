@@ -245,6 +245,10 @@ class ConfigApp:
         self.add_attribute_modifier_button = tk.Button(self.second_frame, text="Add Modifier", command=self.add_attribute_modifier)
         self.add_attribute_modifier_button.grid(row=19, columnspan=2, pady=10)
 
+        # Clear button to clear the config
+        self.clear_button = tk.Button(self.second_frame, text="Clear Config", command=self.clear_config)
+        self.clear_button.grid(row=20, columnspan=2, pady=10)
+
         # Bind change events to inputs
         self.bind_change_events()
 
@@ -329,10 +333,10 @@ class ConfigApp:
             "display_name": self.display_name_entry.get(),
             "lore": self.lore_list,
             "material": self.material_entry.get(),
-            "texture": self.texture_entry.get(),
+            "texture": self.texture_entry.get().strip(),
             "model": self.model_entry.get().strip(),
             "enchants": self.enchants,
-            "custom_enchants": self.custom_enchant_entry.get(),
+            "custom_enchants": self.custom_enchant_entry.get().strip(),
             "unbreakable": self.unbreakable_var.get(),
             "max_custom_durability": self.durability_entry.get(),
             "custom_durability": self.custom_durability_entry.get(),
@@ -418,6 +422,30 @@ class ConfigApp:
 
     def open_color_codes(self):
         webbrowser.open("https://www.digminecraft.com/lists/color_list_pc.php")
+
+    def clear_config(self):
+        self.item_id_entry.delete(0, tk.END)
+        self.display_name_entry.delete(0, tk.END)
+        self.lore_list = []
+        self.lore_entry.delete(0, tk.END)
+        self.material_entry.delete(0, tk.END)
+        self.texture_entry.delete(0, tk.END)
+        self.model_entry.delete(0, tk.END)
+        self.enchants = []
+        self.custom_enchant_entry.delete(0, tk.END)
+        self.unbreakable_var.set(False)
+        self.durability_entry.delete(0, tk.END)
+        self.custom_durability_entry.delete(0, tk.END)
+        self.disappear_when_broken_var.set(False)
+        self.armor_slot_var.set("chest")
+        self.armor_value_entry.delete(0, tk.END)
+        self.armor_toughness_entry.delete(0, tk.END)
+        self.attribute_modifiers = {}
+        self.attribute_modifier_var.set("Select Modifier")
+        self.attribute_modifier_value_entry.delete(0, tk.END)
+        self.modifier_slot_var.set("mainhand")
+        self.update_config_if_changed()
+        messagebox.showinfo("Success", "Config has been cleared.")
 
 if __name__ == "__main__":
     root = tk.Tk()
